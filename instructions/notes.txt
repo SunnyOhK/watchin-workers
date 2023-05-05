@@ -1,0 +1,58 @@
+ASK YOURSELF: What does this mean in SQL?!
+view all is a JOIN SQL
+
+*** MAKE A LIST OF HOW MANY QUERIES I NEED TO ACCEPT VARIABLES IN THE server.js
+Prepare statement... use this to define variables (back tics and a question mark !!  `` ?)
+
+---- INQUIRER QUESTIONS ----
+List: What would you like to do? etc.
+** Most questions are list (not user input / free write) which should make it easier.
+
+
+---- SCHEMA.SQL ----
+DEPARTMENT TABLE
+id: INT PRIMARY KEY
+name: VARCHAR(30) to hold department name
+
+ROLE TABLE
+id: INT PRIMARY KEY
+title: VARCHAR(30) to hold role title
+salary: DECIMAL to hold role salary
+department_id: INT to hold reference to department role belongs to
+
+EMPLOYEE TABLE
+id: INT PRIMARY KEY
+first_name: VARCHAR(30) to hold employee first name
+last_name: VARCHAR(30) to hold employee last name
+role_id: INT to hold reference to employee role
+manager_id: INT to hold reference to another employee that is the manager of the current employee (null if the employee has no manager)
+
+---- LAST STEP = WRITE THE SERVER.JS FILE ----
+
+
+!!!!! console.table() will show the table data from js terminal
+
+22-Stu_Prepared_Statements -- look at the solved folder
+
+EXAMPLE: 
+function deleteBook (id) {
+  db.query(`DELETE FROM favorite_books WHERE id = ?`, id, (err, result) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log(deletedRow);
+});
+}
+deleteBook(3);
+
+HOW CAN YOU POPULATE A LIST FROM SQL DATABASE USING INQUIRER?!? RESEARCH THIS:
+https://stackoverflow.com/questions/66626936/inquirer-js-populate-list-choices-from-sql-database
+inquirer.prompt([
+        {   type: 'list',
+            message: "Choose department to add Role to",
+            name: "department",
+            choices: [
+                `SELECT * FROM departments`
+            ]
+        }
+    ])
