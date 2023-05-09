@@ -1,5 +1,5 @@
 const mysql = require('mysql2');
-const { mainMenuQuery, addDeptQs, addEmployeeQs, addRoleQs, updateEmpQs } = require('./lib/questions');
+const { mainMenuQuery, addDeptQs, addEmployeeQs, addRoleQs, updateEmployeeQs } = require('./lib/questions');
 const inquirer= require("inquirer")
 // Connect to database
 const db = mysql.createConnection(
@@ -19,9 +19,10 @@ db.connect(err => {
   init();
 });
 
+//* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
 const viewAllEmployees = () => {
   //view all our employees and then
-  db.query("Select * FROM employee", (err,results)=>{
+  db.query("SELECT * FROM employee", (err,results)=>{
     if(err){
       throw err
     }
@@ -31,49 +32,83 @@ const viewAllEmployees = () => {
 }
 
 const addEmployee = async() => {
-  const roleChoices = getRoleChoices()
-  const managerChoices = getManagerChoices()
+  const roleChoices = getRoleChoices();
+  const managerChoices = getManagerChoices();
   const answer = await inquirer.prompt(addEmployeeQs(roleChoices, managerChoices))
-  //after we insert the new employee,
-  viewAllEmployees()
+
+  // INSERT NEW EMPLOYEE INTO EMPLOYEE TABLE, THEN...
+  viewAllEmployees();
+}
+
+const updateEmployee = async() => {
+  const employeeChoices = getEmployeeChoices();
+  const roleChoices = getRoleChoices();
+  const managerChoices = getManagerChoices();
+  const answer = await inquirer.prompt(updateEmployeeQs(employeeChoices, roleChoices, managerChoices));
+
+  // UPDATE ROLE (AND THUS, DEPT, MGR) CHANGES IN THE EMPLOYEE TABLE, THEN...
+  viewAllEmployees();
+}
+
+const viewAllRoles = async() => {
+  db.query("Select * FROM role", (err, results) => {
+    if (err) {
+      throw err
+    }
+    console.table(results)
+  init();
+})
+}
+
+const addRole = async() => {
+  const deptChoices = getDepartmentChoices();
+  const answer = await inquirer.prompt(addRoleQs(deptChoices));
+
+  // INSERT NEW ROLE INTO ROLE TABLE, THEN...
+  viewAllRoles();
+}
+
+const viewAllDepartments = async () => {
+  db.query("Select * FROM department", (err, results) => {
+    if (err) {
+      throw err
+    }
+    console.table(results)
+    init();
+  })
+}
+
+const addDepartment = async() => {
+  const answer = await inquirer.prompt(addDeptQs);
+
+  // INSERT NEW DEPARTMENT INTO DEPARTMENT TABLE, THEN...
+  viewAllDepartments();
 }
 
 const init = async () => {
   var answer = await inquirer.prompt(mainMenuQuery)
   switch (answer.mainMenu) {
     case 'View All Employees':
-      viewAllEmployees()
+      viewAllEmployees();
       break;
     case 'Add Employee':
-      addEmployee()
+      addEmployee();
       break;
     case 'Update Employee Role':
-      inquirer.prompt(updateEmp)
-        .then((answers) => {
-          console.log(`Role for ${answers.updateEmployee} has been updated to ${answers.updateRole}.`);
-        });
+      updateEmployee();
       break;
     case 'View All Roles':
-      console.table('Viewing All Company Roles', roles);
+      viewAllRoles();
       break;
     case 'Add Role':
-      inquirer.prompt(addRole)
-        .then((answers) => {
-          console.log(`${answers.roleName} has been added to ${answers.deptAssign} in the database.`);
-        });
+      addRole();
       break;
-
     case 'View All Departments':
-      console.table('Viewing All Company Departments', departments);
+      viewAllDepartments();
       break;
-
     case 'Add Department':
-      inquirer.prompt(addDept)
-        .then((answer) => {
-          console.log(`${answer.deptName} has been added to the database.`);
-        });
+      addDepartment();
       break;
-
     case 'Quit':
       console.log('Goodbye!');
       db.end((err) => {
