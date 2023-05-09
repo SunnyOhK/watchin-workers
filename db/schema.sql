@@ -4,17 +4,20 @@ CREATE DATABASE company_db;
 USE company_db;
 
 CREATE TABLE department (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  dept_name VARCHAR(30) NOT NULL
+  id INT NOT NULL AUTO_INCREMENT,
+  dept_name VARCHAR(30) NOT NULL,
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE role (
-  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  id INT NOT NULL AUTO_INCREMENT,
   title VARCHAR(30) NOT NULL,
   salary DECIMAL NOT NULL,
   dept_id: INT NOT NULL,
+  PRIMARY KEY (id)
   FOREIGN KEY (dept_id)
   REFERENCES department(id)
+  ON DELETE SET NULL
   );
   
 CREATE TABLE employee (
@@ -23,8 +26,10 @@ CREATE TABLE employee (
   last_name VARCHAR(30) NOT NULL,
   role_id INT,
   manager_id INT,
+  PRIMARY (id)
   FOREIGN KEY (role_id)
     REFERENCES role(id),
   FOREIGN KEY (manager_id)
     REFERENCES employee(id)
+  ON DELETE SET NULL
 );
