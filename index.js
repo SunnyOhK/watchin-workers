@@ -1,16 +1,5 @@
 const mysql = require('mysql2');
-const inquirer = require('inquirer');
-// const fs = require('fs');
-const cTable = require('console.table');
 const questions = require('./lib/questions');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-// Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-
 
 // Connect to database
 const db = mysql.createConnection(
@@ -27,8 +16,7 @@ const db = mysql.createConnection(
 
 db.connect(err => {
   if (err) throw err;
-  prompt();
+  init(questions);
 });
 
 // Start command line questions
-init(questions);
