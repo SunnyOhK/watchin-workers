@@ -51,6 +51,6 @@ REFERENCES role(id);
 
 -- IDENTIFY MANAGERS
 SELECT first_name, last_name 
-FROM customers
+FROM employees
 WHERE manager_id === NULL;
 
