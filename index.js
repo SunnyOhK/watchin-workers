@@ -39,31 +39,26 @@ const getManagerChoices = () => {
 }
 
 const getRoleChoices = () => {
-  db.query("SELECT id, title, salary FROM role"), (err, results) => {
+  db.query("SELECT title AS roles FROM role"), (err, results) => {
     if (err) {
       throw err
     }
-    return results;
+    return results.map(result => result.title);
   }
-  const roleChoices = res.map(({ id, title, salary }) => ({
-    value: { id },
-    title: { title },
-    salary: { salary }
-  })
-  );
-
-  console.table(results);
-  console.table(roleChoices);
 }
 
 const getDeptChoices = () => {
-  db.query("SELECT dept_name AS departments FROM department"), (err, results) => {
+  const choices = db.query("SELECT dept_name FROM department", (err, results) => {
     if (err) {
-      throw err;
-    }
-    return results.map(result => result.dept_name);
-  }
-}
+      throw err
+    } 
+    console.log(choices)
+    {
+      results.map((department) => department.dept_name);
+    };
+  })
+};
+
 
 //* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
 const viewAllEmployees = () => {
@@ -107,17 +102,17 @@ const viewAllRoles = async () => {
 
 const addRole = async () => {
   const deptChoices = getDeptChoices();
+  
   const answers = await inquirer.prompt(addRoleQs);
 
   const { roleName, roleSalary, deptAssign } = answers;
 
-  db.query(`INSERT INTO role (title, salary, dept_id) VALUES ('${roleName}', '${roleSalary}', '${deptAssign},)`, (err, res) => {
+  db.query(`INSERT INTO role (title, salary, dept_id) VALUES ('${roleName}', '${roleSalary}', '${deptAssign},) WHERE dept_id = department.id`, (err, res) => {
     if (err) {
       throw err
     }
     console.log(`Successfully added ${roleName} to the Company database.`);
   });
-
 
   // INSERT NEW ROLE INTO ROLE TABLE, THEN...
   viewAllRoles();
