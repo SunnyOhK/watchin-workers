@@ -39,23 +39,31 @@ const getManagerChoices = () => {
 }
 
 const getRoleChoices = () => {
-  db.query(" "), (err, results) => {
+  db.query("SELECT id, title, salary FROM role"), (err, results) => {
     if (err) {
       throw err
     }
-    return ____;
+    return results;
   }
+  const roleChoices = res.map(({ id, title, salary }) => ({
+    value: { id },
+    title: { title },
+    salary: { salary }
+  })
+  );
+
+  console.table(results);
+  console.table(roleChoices);
 }
 
 const getDeptChoices = () => {
-  db.query("SELECT dept_name FROM department"), (err, res) => {
+  db.query("SELECT dept_name AS departments FROM department"), (err, results) => {
     if (err) {
       throw err;
     }
-    return res;
+    return results.map(result => result.dept_name);
   }
 }
-
 
 //* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
 const viewAllEmployees = () => {
@@ -99,7 +107,17 @@ const viewAllRoles = async () => {
 
 const addRole = async () => {
   const deptChoices = getDeptChoices();
-  const answer = await inquirer.prompt(addRoleQs(deptChoices));
+  const answers = await inquirer.prompt(addRoleQs);
+
+  const { roleName, roleSalary, deptAssign } = answers;
+
+  db.query(`INSERT INTO role (title, salary, dept_id) VALUES ('${roleName}', '${roleSalary}', '${deptAssign},)`, (err, res) => {
+    if (err) {
+      throw err
+    }
+    console.log(`Successfully added ${roleName} to the Company database.`);
+  });
+
 
   // INSERT NEW ROLE INTO ROLE TABLE, THEN...
   viewAllRoles();
@@ -117,7 +135,7 @@ const viewAllDepartments = async () => {
 
 const addDepartment = async () => {
   const answer = await inquirer.prompt(addDeptQs);
-  const { deptName } = answer;  
+  const { deptName } = answer;
   // 'answer' returned in format `{ deptName: 'Maintenance' } so I need to target the VALUE and not the COLUMN`
 
   db.query(`INSERT INTO department (dept_name) VALUES ('${deptName}')`, (err, res) => {
