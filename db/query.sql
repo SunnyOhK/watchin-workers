@@ -41,8 +41,8 @@ ORDER BY id;
 
 -- UPDATE THE ROLE FOR AN EMPLOYEE
 UPDATE employee
-SET role_id = {new_role_id}
-WHERE id = {employee_id};
+SET role_id = {newRoleId}
+WHERE id = employee_id;
 
 ALTER TABLE employee
 ADD CONSTRAINT fk_employee_role
