@@ -49,7 +49,7 @@ E:
 
 Demo:
 
-https://user-images.githubusercontent.com/127900916/236368158-053e2c97-d22e-4484-8dc7-0f36cff9e6dd.mp4
+< drag & drop mp4 >
 
 
 ## Credits
