@@ -20,16 +20,21 @@ db.connect(err => {
 });
 
 //* USE MYSQL JS QUERIES TO HANDLE SQL DATABASE RETURNS
-const getEmployeeChoices = () => {
-  db.query("SELECT CONCAT(first_name, last_name) AS employees FROM employee"), (err, results) => {
-    if (err) {
-      throw err
-    }
-    return results;
-  }
-}
+const getEmployeeChoices = async () => {
+  const [employeeRows, fields] = await db.promise().query("Select * From employee")
+  return employeeRows.map((element) => {
+      return {value: element.id, name: `${element.first_name} ${element.last_name}`}
+    })
+};
 
-const getManagerChoices = () => {
+const getDeptChoices = async () => {
+  const [departmentRows, fields] = await db.promise().query("Select * From Department")
+  return departmentRows.map(element => {
+    return { value: element.id, name: element.dept_name }
+  })
+};
+
+const getManagerChoices = async () => {
   db.query(" "), (err, results) => {
     if (err) {
       throw err
@@ -38,26 +43,17 @@ const getManagerChoices = () => {
   }
 }
 
-const getRoleChoices = () => {
-  db.query("SELECT title AS roles FROM role"), (err, results) => {
+const getRoleChoices = async () => {
+  const roles = db.query("SELECT title FROM role", (err, results) => {
     if (err) {
       throw err
     }
-    return results.map(result => result.title);
+    const roleChoices = results.map(roles);
+    return ["value: id", "name: title"]
   }
+  )
 }
 
-const getDeptChoices = () => {
-  const choices = db.query("SELECT dept_name FROM department", (err, results) => {
-    if (err) {
-      throw err
-    } 
-    console.log(choices)
-    {
-      results.map((department) => department.dept_name);
-    };
-  })
-};
 
 
 //* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
@@ -81,7 +77,7 @@ const addEmployee = async () => {
 }
 
 const updateEmployee = async () => {
-  const employeeChoices = getEmployeeChoices();
+  const employeeChoices = await getEmployeeChoices();
   const roleChoices = getRoleChoices();
   const managerChoices = getManagerChoices();
   const answer = await inquirer.prompt(updateEmployeeQs(employeeChoices, roleChoices, managerChoices));
@@ -101,21 +97,15 @@ const viewAllRoles = async () => {
 }
 
 const addRole = async () => {
-  const deptChoices = getDeptChoices();
-  
-  const answers = await inquirer.prompt(addRoleQs);
-
-  const { roleName, roleSalary, deptAssign } = answers;
-
-  db.query(`INSERT INTO role (title, salary, dept_id) VALUES ('${roleName}', '${roleSalary}', '${deptAssign},) WHERE dept_id = department.id`, (err, res) => {
-    if (err) {
-      throw err
-    }
-    console.log(`Successfully added ${roleName} to the Company database.`);
-  });
-
-  // INSERT NEW ROLE INTO ROLE TABLE, THEN...
-  viewAllRoles();
+  try {
+    const departmentChoices = await getDeptChoices()
+    const answers = await inquirer.prompt(addRoleQs(departmentChoices));
+    await db.promise().query(`INSERT INTO role (title, salary, dept_id) VALUES ('${answers.roleName}', ${answers.roleSalary}, ${answers.deptAssign})`)
+    console.log(`Successfully added ${answers.roleName} to the database`)
+    viewAllRoles()
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const viewAllDepartments = async () => {
