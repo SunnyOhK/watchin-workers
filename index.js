@@ -1,6 +1,8 @@
 const mysql = require('mysql2');
 const { mainMenuQuery, addDeptQs, addEmployeeQs, addRoleQs, updateEmployeeQs } = require('./lib/questions');
-const inquirer = require("inquirer")
+const inquirer = require('inquirer');
+const figlet = require('figlet');
+
 // Connect to database
 const db = mysql.createConnection(
   {
@@ -14,8 +16,13 @@ const db = mysql.createConnection(
   console.log('You are now connected to the Company database.')
 );
 
-db.connect(err => {
-  if (err) throw err;
+figlet('Company CMS', function (err, data) {
+  if (err) {
+    console.log("Something went wrong...");
+    console.dir(err);
+    return;
+  }
+  console.log(data);
   init();
 });
 
@@ -131,7 +138,7 @@ const addDepartment = async () => {
     if (err) {
       throw err
     }
-    console.log(`Successfully added ${answer} to Departments.`);
+    console.log(`Successfully added ${ deptName } to Departments.`);
   })
   // INSERT NEW DEPARTMENT INTO DEPARTMENT TABLE, THEN...
   viewAllDepartments();
