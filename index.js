@@ -23,38 +23,31 @@ db.connect(err => {
 const getEmployeeChoices = async () => {
   const [employeeRows, fields] = await db.promise().query("Select * From employee")
   return employeeRows.map((element) => {
-      return {value: element.id, name: `${element.first_name} ${element.last_name}`}
-    })
+    return { value: element.id, name: `${element.first_name} ${element.last_name}` }
+  })
 };
 
 const getDeptChoices = async () => {
-  const [departmentRows, fields] = await db.promise().query("Select * From Department")
+  const [departmentRows, fields] = await db.promise().query("SELECT * FROM department")
   return departmentRows.map(element => {
     return { value: element.id, name: element.dept_name }
   })
 };
 
-const getManagerChoices = async () => {
-  db.query(" "), (err, results) => {
-    if (err) {
-      throw err
-    }
-    return ____;
-  }
-}
-
 const getRoleChoices = async () => {
-  const roles = db.query("SELECT title FROM role", (err, results) => {
-    if (err) {
-      throw err
-    }
-    const roleChoices = results.map(roles);
-    return ["value: id", "name: title"]
-  }
-  )
+  const [roleRows, fields] = await db.promise().query("SELECT * FROM role")
+  return roleRows.map(element => {
+    return { value: element.id, name: element.title }
+  })
 }
 
-
+const getManagerChoices = async () => {
+  
+  const [managerRows, fields] = await db.promise().query("SELECT * FROM employee WHERE manager_id IS NULL")
+  return managerRows.map(element => {
+    return { value: element.id, name: element.manager_name }
+  })
+}
 
 //* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
 const viewAllEmployees = () => {
@@ -68,12 +61,18 @@ const viewAllEmployees = () => {
 }
 
 const addEmployee = async () => {
-  const roleChoices = getRoleChoices();
-  const managerChoices = getManagerChoices();
-  const answer = await inquirer.prompt(addEmployeeQs(roleChoices, managerChoices))
+  try {
+    const roleChoices = await getRoleChoices();
+    const managerChoices = await getManagerChoices();
+    const answers = await inquirer.prompt(addEmployeeQs(roleChoices, managerChoices));
 
-  // INSERT NEW EMPLOYEE INTO EMPLOYEE TABLE, THEN...
-  viewAllEmployees();
+    await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.empFirstName}', '${answers.empLastName}', ${answers.empRole}, ${answers.empManager})`);
+    console.log(`Successfully added '${answers.empFirstName}' '${answers.empLastName}' to the Company database.`)
+    viewAllEmployees();
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const updateEmployee = async () => {
@@ -101,7 +100,7 @@ const addRole = async () => {
     const departmentChoices = await getDeptChoices()
     const answers = await inquirer.prompt(addRoleQs(departmentChoices));
     await db.promise().query(`INSERT INTO role (title, salary, dept_id) VALUES ('${answers.roleName}', ${answers.roleSalary}, ${answers.deptAssign})`)
-    console.log(`Successfully added ${answers.roleName} to the database`)
+    console.log(`Successfully added ${answers.roleName} to the Company database.`)
     viewAllRoles()
   } catch (error) {
     console.log(error)
@@ -166,5 +165,3 @@ const init = async () => {
       break;
   };
 }
-
-// [value: id, name:]
