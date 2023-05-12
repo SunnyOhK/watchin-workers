@@ -30,7 +30,7 @@ figlet('Company CMS', function (err, data) {
 const getEmployeeChoices = async () => {
   const [employeeRows, fields] = await db.promise().query("SELECT id, first_name, last_name FROM employee")
   return employeeRows.map((element) => {
-    return { value: element.id, name: `${element.first_name} ${element.last_name}` }
+    return { value: element.id, first_name: element.first_name, last_name: element.last_name, name: `${element.first_name} ${element.last_name}` }
   })
 };
 
@@ -55,7 +55,7 @@ const getManagerChoices = async () => {
   })
 }
 
-//* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN:
+//* ASYNC FUNCTIONS TO HANDLE SEQUENCE OF QUESTIONS AND RETURN
 const viewAllEmployees = () => {
   db.query("SELECT employee.id, employee.first_name, employee.last_name, role.title, department.dept_name, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.dept_id = department.id LEFT JOIN employee AS manager ON employee.manager_id = manager.id", (err, results) => {
     if (err) {
@@ -75,7 +75,6 @@ const addEmployee = async () => {
     await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.empFirstName}', '${answers.empLastName}', ${answers.empRole}, ${answers.empManager})`);
     console.log(`Successfully added ${answers.empFirstName} ${answers.empLastName} to the Company database.`)
     viewAllEmployees();
-
   } catch (error) {
     console.log(error)
   }
@@ -87,9 +86,13 @@ const updateEmployee = async () => {
     const roleChoices = await getRoleChoices();
     const answers = await inquirer.prompt(updateEmployeeQs(employeeChoices, roleChoices));
 
+    const [roleTitle, fields] = await db.promise().query(`SELECT title FROM role WHERE id = ${answers.updateRole}`);
+    const selectedRoleTitle = roleTitle[0].title;
+
     await db.promise().query(`UPDATE employee SET role_id = ${answers.updateRole} WHERE id = ${answers.updateEmployee}`);
 
-    console.log(`Successfully updated role to ${answers.updateRole} for ${answers.empFirstName} ${answers.empLastName}  the Company database.`)
+    //* I asked Chat GPT for help on rendering the employee name since this function (updateEmployee) relies on IDs to update db tables                
+    console.log(`Successfully updated role to ${selectedRoleTitle} for ${employeeChoices.find((e) => e.value === answers.updateEmployee).first_name} ${employeeChoices.find((e) => e.value === answers.updateEmployee).last_name} in the Company database.`)
     viewAllEmployees();
 
   } catch (error) {
@@ -138,7 +141,7 @@ const addDepartment = async () => {
     if (err) {
       throw err
     }
-    console.log(`Successfully added ${ deptName } to Departments.`);
+    console.log(`Successfully added ${deptName} to Departments.`);
   })
   // INSERT NEW DEPARTMENT INTO DEPARTMENT TABLE, THEN...
   viewAllDepartments();
