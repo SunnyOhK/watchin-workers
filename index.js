@@ -21,7 +21,7 @@ db.connect(err => {
 
 //* USE MYSQL JS QUERIES TO HANDLE SQL DATABASE RETURNS
 const getEmployeeChoices = async () => {
-  const [employeeRows, fields] = await db.promise().query("Select * From employee")
+  const [employeeRows, fields] = await db.promise().query("SELECT id, first_name, last_name FROM employee")
   return employeeRows.map((element) => {
     return { value: element.id, name: `${element.first_name} ${element.last_name}` }
   })
@@ -42,10 +42,9 @@ const getRoleChoices = async () => {
 }
 
 const getManagerChoices = async () => {
-  
-  const [managerRows, fields] = await db.promise().query("SELECT * FROM employee WHERE manager_id IS NULL")
+  const [managerRows, fields] = await db.promise().query("SELECT id, first_name, last_name FROM employee WHERE manager_id IS NULL")
   return managerRows.map(element => {
-    return { value: element.id, name: element.manager_name }
+    return { value: element.id, name: `${element.first_name} ${element.last_name}` }
   })
 }
 
@@ -67,7 +66,7 @@ const addEmployee = async () => {
     const answers = await inquirer.prompt(addEmployeeQs(roleChoices, managerChoices));
 
     await db.promise().query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.empFirstName}', '${answers.empLastName}', ${answers.empRole}, ${answers.empManager})`);
-    console.log(`Successfully added '${answers.empFirstName}' '${answers.empLastName}' to the Company database.`)
+    console.log(`Successfully added ${answers.empFirstName} ${answers.empLastName} to the Company database.`)
     viewAllEmployees();
 
   } catch (error) {
@@ -76,13 +75,19 @@ const addEmployee = async () => {
 }
 
 const updateEmployee = async () => {
-  const employeeChoices = await getEmployeeChoices();
-  const roleChoices = getRoleChoices();
-  const managerChoices = getManagerChoices();
-  const answer = await inquirer.prompt(updateEmployeeQs(employeeChoices, roleChoices, managerChoices));
+  try {
+    const employeeChoices = await getEmployeeChoices();
+    const roleChoices = await getRoleChoices();
+    const answers = await inquirer.prompt(updateEmployeeQs(employeeChoices, roleChoices));
 
-  // UPDATE ROLE (AND THUS, DEPT, MGR) CHANGES IN THE EMPLOYEE TABLE, THEN...
-  viewAllEmployees();
+    await db.promise().query(`UPDATE employee SET role_id = ${answers.updateRole} WHERE id = ${answers.updateEmployee}`);
+
+    console.log(`Successfully updated role to ${answers.updateRole} for ${answers.empFirstName} ${answers.empLastName}  the Company database.`)
+    viewAllEmployees();
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const viewAllRoles = async () => {
