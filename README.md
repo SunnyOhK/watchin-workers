@@ -12,6 +12,7 @@ This application is content management system (CMS) that relies on command-line 
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Technology Stack](#technology-stack)
 - [Credits](#credits)
 - [License](#license)
 - [Contact](#contact)
