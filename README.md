@@ -58,7 +58,7 @@ Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtA
 | ---- | --- |
 | Express | Node.js module |
 | Inquirer | Command line interface for Node.js |
-| Node MySQL 2 | MySQL client for Node.js |
+| MySQL 2 | MySQL client for Node.js |
 | Figlet | Implement FIGfont spec in JavaScript |
 | Console.table | Allows for command line table renderings |
 
