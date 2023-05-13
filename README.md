@@ -54,6 +54,18 @@ Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtA
 
 ## Technology Stack
 
+|  | Tech Stack | Description |
+| ---- | --- | --- |
+| Foundation |  |  |
+| <img height="20px" src="assets/jsIcon.png"> | JavaScript | Scripting language for webpages |
+| <img height="20px" src="assets/mySQLIcon.png"> | MySQL | Open Source SQL database management system |
+| npm Packages |  |  |
+| <img height="20px" src="assets/nodeIcon.png"> | Node.js | Javascript Framework |
+| <img height="20px" src="assets/expressJsIcon.png"> | Express | Node.js module |
+| <img height="20px" src="assets/inquirerIcon.png"> | Inquirer | Command line interface for Node.js |
+| <img height="20px" src="assets/figletIcon.png"> | Figlet | Implement FIGfont spec in JavaScript |
+| <img height="20px" src="assets/consoleTableIcon.png"> | Console.table | Allows for command line table renderings |
+=======
 | npm Packages | Description |
 | ---- | --- |
 | Express | Node.js module |
@@ -62,10 +74,12 @@ Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtA
 | Figlet | Implement FIGfont spec in JavaScript |
 | Console.table | Allows for command line table renderings |
 
+
 ## Credits
 
 - Alex Gonzalez: EdX Tutor - Taught me about "async => await db.promise()" in order to receive information and return objects from the SQL database.
-- Express.js: https://expressjs.com/
+- Chat GPT helped with understanding overall concepts or explaining syntax errors. Any use of this tool is referenced within the code.
+- Jessica Saddington - This fellow bootcamp student shared the Figlet npm package with the class for rendering decorative text at the start of our command line prompts.
 
 ## License
 This project is licensed under: [MIT](https://choosealicense.com/licenses/mit/)
