@@ -12,6 +12,7 @@ This application is content management system (CMS) that relies on command-line 
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Technology Stack](#technology-stack)
 - [Credits](#credits)
 - [License](#license)
 - [Contact](#contact)
@@ -64,6 +65,15 @@ Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtA
 | <img height="20px" src="assets/inquirerIcon.png"> | Inquirer | Command line interface for Node.js |
 | <img height="20px" src="assets/figletIcon.png"> | Figlet | Implement FIGfont spec in JavaScript |
 | <img height="20px" src="assets/consoleTableIcon.png"> | Console.table | Allows for command line table renderings |
+=======
+| npm Packages | Description |
+| ---- | --- |
+| Express | Node.js module |
+| Inquirer | Command line interface for Node.js |
+| MySQL 2 | MySQL client for Node.js |
+| Figlet | Implement FIGfont spec in JavaScript |
+| Console.table | Allows for command line table renderings |
+
 
 ## Credits
 
