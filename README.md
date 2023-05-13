@@ -44,7 +44,11 @@ This application connects with your preferred company database and runs in a loc
 
 
 ## Usage 
-E:
+
+
+https://github.com/SunnyOhK/watchin-workers/assets/127900916/42b135a2-082b-4a8a-a006-9cf4785d1fd6
+
+
   1. Visit the https://watch.screencastify.com/v/Oswpez876fk4kNtAvTuO
 
 Demo:
