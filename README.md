@@ -42,23 +42,28 @@ This application connects with your preferred company database and runs in a loc
               node index.js
       
 
-
 ## Usage 
 
+### Demo:
 
 https://github.com/SunnyOhK/watchin-workers/assets/127900916/42b135a2-082b-4a8a-a006-9cf4785d1fd6
 
 
-  1. Visit the https://watch.screencastify.com/v/Oswpez876fk4kNtAvTuO
+Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtAvTuO
 
-Demo:
+## Technology Stack
 
-< drag & drop mp4 >
-
+| npm Packages | Description |
+| ---- | --- |
+| Express | Node.js module |
+| Inquirer | Command line interface for Node.js |
+| Node MySQL 2 | MySQL client for Node.js |
+| Figlet | Implement FIGfont spec in JavaScript |
+| Console.table | Allows for command line table renderings |
 
 ## Credits
 
-- Alex Gonzalez: EdX Tutor 
+- Alex Gonzalez: EdX Tutor - Taught me about "async => await db.promise()" in order to receive information and return objects from the SQL database.
 - Express.js: https://expressjs.com/
 
 ## License
@@ -71,7 +76,6 @@ For questions, please contact me:
 
 ### GitHub: 
   &nbsp;&nbsp;&nbsp; [SunnyOhK](https://github.com/SunnyOhK)
-
 ### Project Link: 
   &nbsp;&nbsp;&nbsp; https://github.com/SunnyOhK/watchin-workers
 ### Email: 
