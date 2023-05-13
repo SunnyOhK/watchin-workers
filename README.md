@@ -6,7 +6,7 @@
 <br>
 
 ## Description
-This application is content management system (CMS) that relies on command-line queries to manage a company's employee database. With the implementation of Node.js, Inquirer, and MySQL, a user can access and update records for company departments, roles, and employees.
+This application is a content management system (CMS) that relies on command-line queries to manage a company's employee database. With the implementation of Node.js, Inquirer, and MySQL, a user can access and update records for company departments, roles, and employees.
 
 ## Table of Contents
 
@@ -44,6 +44,8 @@ This application connects with your preferred company database and runs in a loc
       
 
 ## Usage 
+
+After you clone the repository and install the node modules, please follow this video tutorial for simple step-by-step instructions:
 
 ### Demo:
 
