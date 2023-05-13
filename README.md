@@ -52,7 +52,7 @@ After you clone the repository and install the node modules, please follow this 
 https://github.com/SunnyOhK/watchin-workers/assets/127900916/42b135a2-082b-4a8a-a006-9cf4785d1fd6
 
 
-Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtAvTuO
+🎬 Or you can view the video at: https://watch.screencastify.com/v/Oswpez876fk4kNtAvTuO
 
 ## Technology Stack
 
